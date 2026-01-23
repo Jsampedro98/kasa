@@ -10,7 +10,7 @@ export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className={`fixed md:relative top-0 left-0 right-0 z-50 w-full flex justify-center md:pt-8 bg-blanc md:bg-transparent shadow-sm md:shadow-none transition-all duration-300 ${isMenuOpen ? 'h-auto pb-4' : 'h-[70px] md:h-auto pb-0 md:pb-4'}`}>
+    <header className={`relative w-full flex justify-center md:pt-8 bg-blanc md:bg-transparent shadow-sm md:shadow-none transition-all duration-300 ${isMenuOpen ? 'h-auto pb-4' : 'h-[70px] md:h-auto pb-0 md:pb-4'}`}>
       
 
       <div className={`bg-blanc md:rounded-[30px] md:shadow-sm w-full md:w-[95%] md:max-w-[1200px] px-6 md:px-10 relative flex flex-col md:flex-row md:items-center md:justify-between transition-all duration-300 ${isMenuOpen ? 'h-auto' : 'h-[70px] md:h-[90px]'}`}>
