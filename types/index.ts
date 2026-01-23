@@ -18,3 +18,11 @@ export interface Property {
   price_per_night: number;
 }
 
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  picture?: string;
+  role: string;
+}

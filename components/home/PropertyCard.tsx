@@ -2,8 +2,10 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Property } from '@/types';
 import useFavorites from '@/hooks/useFavorites';
+import { useAuth } from '@/context/AuthContext';
 
 interface PropertyCardProps {
   property: Property;
@@ -11,11 +13,19 @@ interface PropertyCardProps {
 
 export default function PropertyCard({ property }: PropertyCardProps) {
   const { isFavorite, toggleFavorite } = useFavorites();
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
   const liked = isFavorite(property.id);
 
   const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent navigation to detail page
-    e.stopPropagation(); // Stop bubbling just in case
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!isAuthenticated) {
+      router.push('/login');
+      return;
+    }
+
     toggleFavorite(property.id);
   };
 
