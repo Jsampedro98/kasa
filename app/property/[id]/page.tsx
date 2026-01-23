@@ -1,4 +1,5 @@
 import { getProperty } from '@/lib/api';
+import DeletePropertyButton from '@/components/property/DeletePropertyButton';
 import PropertyGallery from '@/components/property/PropertyGallery';
 import PropertyInfo from '@/components/property/PropertyInfo';
 import HostWidget from '@/components/property/HostWidget';
@@ -20,13 +21,18 @@ export default async function PropertyPage(props: PropertyPageProps) {
 
   return (
     <main className="max-w-[1240px] mx-auto px-5 py-6 md:py-10">
-      {/* Back Button */}
-      <Link href="/" className="inline-flex items-center gap-2 text-gray-700 hover:text-black hover:underline mb-6 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-        </svg>
-        Retour aux annonces
-      </Link>
+      {/* Top Bar: Back & Actions */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+        <Link href="/" className="inline-flex items-center gap-2 text-gray-700 hover:text-black hover:underline transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+            </svg>
+            Retour aux annonces
+        </Link>
+        
+        <DeletePropertyButton propertyId={property.id} hostId={property.host.id} />
+      </div>
+
 
       {/* Main Layout: Left Col (Gallery + Info) | Right Col (Host) */}
       <div className="flex flex-col md:flex-row gap-6 md:gap-10">

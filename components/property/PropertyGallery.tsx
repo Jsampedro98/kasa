@@ -29,7 +29,7 @@ export default function PropertyGallery({ images, title }: PropertyGalleryProps)
     setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   }, [images.length]);
 
-  // Keyboard navigation
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -45,7 +45,7 @@ export default function PropertyGallery({ images, title }: PropertyGalleryProps)
 
   if (!images || images.length === 0) return null;
 
-  // Grid displays max 5 images
+
   const displayImages = images.slice(0, 5);
 
   return (
@@ -66,23 +66,24 @@ export default function PropertyGallery({ images, title }: PropertyGalleryProps)
 
            return (
              <div key={index} className={className} onClick={() => openLightbox(index)}>
-               <Image
-                 src={img}
-                 alt={`${title} - image ${index + 1}`}
-                 fill
-                 className="object-cover hover:scale-105 transition-transform duration-300"
-                 sizes={index === 0 ? "(max-width: 768px) 100vw, 50vw" : "25vw"}
-                 priority={index === 0}
-               />
+                 <Image
+                  src={img}
+                  alt={`${title} - image ${index + 1}`}
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-300"
+                  sizes={index === 0 ? "(max-width: 768px) 100vw, 50vw" : "25vw"}
+                  priority={index === 0}
+                  unoptimized={img.startsWith('http://127.0.0.1') || img.startsWith('http://localhost')}
+                />
              </div>
            );
         })}
       </div>
 
-      {/* Lightbox Overlay */}
+
       {isOpen && (
         <div className="fixed inset-0 z-50 bg-black/90 flex justify-center items-center">
-            {/* Close Button */}
+
             <button 
                 onClick={closeLightbox} 
                 className="absolute top-10 right-10 text-white z-50 p-2 hover:bg-white/10 rounded-full transition-colors"
@@ -93,7 +94,7 @@ export default function PropertyGallery({ images, title }: PropertyGalleryProps)
                 </svg>
             </button>
 
-            {/* Navigation - Left */}
+
             {images.length > 1 && (
                 <button 
                     onClick={(e) => { e.stopPropagation(); prevImage(); }} 
@@ -106,21 +107,22 @@ export default function PropertyGallery({ images, title }: PropertyGalleryProps)
                 </button>
             )}
 
-            {/* Main Image with Animation */}
+
             <div className="relative w-full h-full md:w-[85%] md:h-[85%] flex justify-center items-center pointer-events-none">
                  <div className="relative w-full h-full"> 
                    <Image 
-                        key={currentIndex} // Triggers animation on change
+                        key={currentIndex}
                         src={images[currentIndex]} 
                         alt={`Slide ${currentIndex + 1}`} 
                         fill 
                         className="object-contain pointer-events-auto transition-opacity duration-500 animate-fadeIn"
                         priority
+                        unoptimized={images[currentIndex].startsWith('http://127.0.0.1') || images[currentIndex].startsWith('http://localhost')}
                    />
                  </div>
             </div>
 
-             {/* Navigation - Right */}
+
              {images.length > 1 && (
                 <button 
                     onClick={(e) => { e.stopPropagation(); nextImage(); }} 
@@ -133,7 +135,7 @@ export default function PropertyGallery({ images, title }: PropertyGalleryProps)
                 </button>
             )}
 
-            {/* Counter */}
+
             <div className="absolute bottom-10 text-white font-medium text-lg">
                 {currentIndex + 1} / {images.length}
             </div>

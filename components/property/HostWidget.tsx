@@ -13,7 +13,13 @@ export default function HostWidget({ host, rating }: HostWidgetProps) {
         
         <div className="flex items-center gap-4 mb-6">
             <div className="relative w-[60px] h-[60px] rounded-full overflow-hidden">
-                <Image src={host.picture} alt={host.name} fill className="object-cover" />
+                <Image 
+                    src={host.picture} 
+                    alt={host.name} 
+                    fill 
+                    className="object-cover" 
+                    unoptimized={host.picture.startsWith('http://127.0.0.1') || host.picture.startsWith('http://localhost')} 
+                />
             </div>
             <div>
                 <p className="text-lg font-medium text-noir">{host.name}</p>
