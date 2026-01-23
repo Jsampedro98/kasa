@@ -17,7 +17,7 @@ export default function HostWidget({ host, rating }: HostWidgetProps) {
                     src={host.picture} 
                     alt={host.name} 
                     fill 
-                    className="object-cover" 
+                    className="object-cover rounded-full" 
                     unoptimized={host.picture.startsWith('http://127.0.0.1') || host.picture.startsWith('http://localhost')} 
                 />
             </div>

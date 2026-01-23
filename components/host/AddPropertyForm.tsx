@@ -20,7 +20,7 @@ const SUGGESTED_TAGS = [
 
 export default function AddPropertyForm() {
   const router = useRouter();
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   
   // Form State
   const [title, setTitle] = useState('');
@@ -30,9 +30,6 @@ export default function AddPropertyForm() {
   
   const [cover, setCover] = useState('');
   const [pictures, setPictures] = useState<string[]>(['']); // Start with one empty slot
-  
-  const [hostName, setHostName] = useState('');
-  const [hostPicture, setHostPicture] = useState('');
 
   const [selectedEquipments, setSelectedEquipments] = useState<Set<string>>(new Set());
   const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
@@ -62,15 +59,6 @@ export default function AddPropertyForm() {
     }
 
     const data = await res.json();
-    // Backend returns url like "/uploads/..."
-    // We need to prepend the backend host if we want to display it immediately or store absolute URL?
-    // The backend serves static files at root, but for frontend consistency let's store the full path if possible, 
-    // OR just the path returned by backend if your other components handle relative paths.
-    // Based on `api.ts`, properties have full URLs or handled by Image component? 
-    // Usually other properties have full URLs or relative. Let's assume relative is fine or prepend backend base.
-    // Checking `PropertyCard`, it uses `property.cover` directly in `Image src`. If it's relative, Next.js Image needs domain config.
-    // The backend seems to return `/uploads/filename.jpg`.
-    // Let's prepend http://127.0.0.1:4000 for verified display in frontend if needed.
     return `http://127.0.0.1:4000${data.url}`; 
   };
 
@@ -130,8 +118,8 @@ export default function AddPropertyForm() {
     setError('');
 
     try {
-      if (!title || !description || !location || !cover || !hostName) {
-        throw new Error("Veuillez remplir les champs obligatoires (Titre, Description, Localisation, Cover, Nom de l'hôte)");
+      if (!title || !description || !location || !cover) {
+        throw new Error("Veuillez remplir les champs obligatoires (Titre, Description, Localisation, Cover)");
       }
 
       const payload = {
@@ -140,10 +128,7 @@ export default function AddPropertyForm() {
         location: zipCode ? `${location} (${zipCode})` : location,
         cover,
         pictures: pictures.filter(p => p.trim() !== ''),
-        host: {
-          name: hostName,
-          picture: hostPicture
-        },
+        // Host is handled by backend from auth token
         equipments: Array.from(selectedEquipments),
         tags: Array.from(selectedTags),
         price_per_night: 100
@@ -153,7 +138,6 @@ export default function AddPropertyForm() {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-             // Assuming create also needs auth, though controller might check role
             'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(payload)
@@ -174,6 +158,12 @@ export default function AddPropertyForm() {
     }
   };
 
+  // Import Image component if not already imported, but I see I can't strict mode imports here easily. 
+  // Assuming Image is not imported yet or I need to check top of file.
+  // Actually, I can use the same <img> or <div style> logic or Next Image if available.
+  // I will use a simple <img> for the user profile since AddPropertyForm might not have Image imported.
+  // Wait, I am replacing the whole component body basically.
+  
   return (
     <div className="max-w-[1240px] mx-auto px-5 md:px-10 py-10">
         <Link href="/" className="inline-flex items-center gap-2 bg-gray-100 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-200 transition-colors mb-8">
@@ -314,36 +304,27 @@ export default function AddPropertyForm() {
                     </button>
                 </div>
 
-                {/* 3. Host Box */}
+                {/* 3. Host Box (Read Only) */}
                 <div className="order-3 bg-white rounded-lg p-6 lg:p-10 shadow-sm border border-gray-100 mb-6 lg:mb-0">
-                     <div className="mb-6">
-                        <label className="block font-semibold mb-2">Nom de l'hôte</label>
-                        <input 
-                            type="text" 
-                            className="w-full border border-gray-200 rounded p-3 text-sm focus:outline-none focus:border-main-red"
-                            value={hostName}
-                            onChange={e => setHostName(e.target.value)}
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block font-semibold mb-2">Photo de profil</label>
-                        <div className="flex gap-2">
-                            <input 
-                                type="text" 
-                                className="flex-1 min-w-0 border border-gray-200 rounded p-2 lg:p-3 text-sm focus:outline-none focus:border-main-red bg-gray-50 text-gray-500"
-                                placeholder="URL de l'image"
-                                value={hostPicture}
-                                readOnly
-                            />
-                             <label className="bg-main-red text-white w-12 rounded hover:opacity-90 flex items-center justify-center text-xl font-bold cursor-pointer">
-                                <span>+</span>
-                                <input type="file" className="hidden" accept="image/*" onChange={(e) => onFileChange(e, setHostPicture)} />
-                            </label>
+                     <div className="flex items-center gap-4 mb-2">
+                        <div className="relative w-16 h-16 rounded-full overflow-hidden bg-gray-200 border border-gray-100">
+                             {user?.picture ? (
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img src={user.picture} alt={user.name} className="w-full h-full object-cover" />
+                             ) : (
+                                <div className="w-full h-full flex items-center justify-center text-gray-400">
+                                   <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                                </div>
+                             )}
                         </div>
-                    </div>
-                    <button className="text-main-red text-sm font-medium hover:underline">
-                        + Ajouter une image
-                    </button>
+                        <div>
+                            <p className="text-sm text-gray-500">Hôte (Vous)</p>
+                            <p className="text-lg font-bold text-noir">{user?.name || 'Utilisateur'}</p>
+                        </div>
+                     </div>
+                     <p className="text-xs text-gray-400 mt-2">
+                        Ces informations seront affichées sur l'annonce. Vous pouvez les modifier dans votre profil.
+                     </p>
                 </div>
 
                 {/* 5. Categories Box */}

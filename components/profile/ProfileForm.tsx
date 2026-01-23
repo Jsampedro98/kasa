@@ -125,7 +125,7 @@ export default function ProfileForm() {
                                 src={picture} 
                                 alt="Profil" 
                                 fill 
-                                className="object-cover" 
+                                className="object-cover rounded-full" 
                                 sizes="128px"
                                 unoptimized={picture.startsWith('http://127.0.0.1') || picture.startsWith('http://localhost')}
                             />
