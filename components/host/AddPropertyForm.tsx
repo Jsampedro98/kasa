@@ -59,6 +59,7 @@ export default function AddPropertyForm() {
     }
 
     const data = await res.json();
+    if (data.url.startsWith('http')) return data.url;
     return `${process.env.NEXT_PUBLIC_API_URL}${data.url}`; 
   };
 
