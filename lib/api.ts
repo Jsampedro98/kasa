@@ -9,7 +9,7 @@ const API_URL = BASE_URL.endsWith('/api') ? BASE_URL : `${BASE_URL}/api`;
  */
 export async function getProperties(): Promise<Property[]> {
     try {
-        const response = await fetch(`${API_URL}/properties`);
+        const response = await fetch(`${API_URL}/properties`, { cache: 'no-store' });
         if (!response.ok) {
             const errorText = await response.text();
             console.error(`Failed to fetch properties: ${response.status} ${response.statusText}`, errorText);
@@ -29,7 +29,7 @@ export async function getProperties(): Promise<Property[]> {
  */
 export async function getProperty(id: string): Promise<Property | null> {
     try {
-        const response = await fetch(`${API_URL}/properties/${id}`);
+        const response = await fetch(`${API_URL}/properties/${id}`, { cache: 'no-store' });
         if (!response.ok) {
             if (response.status === 404) return null;
             throw new Error('Failed to fetch property');
