@@ -6,6 +6,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
+/**
+ * Global Header component.
+ * Features:
+ * - Responsive navigation (desktop/mobile).
+ * - Authentication state handling (login/logout).
+ * - Mobile burger menu.
+ * - Active link highlighting.
+ */
 export default function Header() {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);

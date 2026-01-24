@@ -5,6 +5,9 @@ import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
 import MessageBubble from './MessageBubble';
 
+/**
+ * Represents a single message in the conversation.
+ */
 interface Message {
   id: number;
   sender_id: number;
@@ -16,15 +19,31 @@ interface Message {
   sender_picture?: string;
 }
 
+/**
+ * Props for the ChatWindow component.
+ */
 interface ChatWindowProps {
+  /** The ID of the current conversation. */
   conversationId: string;
+  /** Details of the user being chatted with. */
   conversationUser: {
     name: string;
     picture: string | null;
   };
+  /** Callback function to handle back navigation (mobile). */
   onBack: () => void;
 }
 
+/**
+ * A chat interface component that displays messages and allows sending new ones.
+ * Features:
+ * - Real-time message polling
+ * - Auto-scrolling to bottom
+ * - Optimistic UI updates
+ * - Mobile responsive header and navigation
+ * 
+ * @param {ChatWindowProps} props - The component props.
+ */
 export default function ChatWindow({ conversationId, conversationUser, onBack }: ChatWindowProps) {
   const { user, token } = useAuth();
   const [messages, setMessages] = useState<Message[]>([]);
@@ -148,7 +167,11 @@ export default function ChatWindow({ conversationId, conversationUser, onBack }:
     <>
       {/* Header */}
       <div className="h-[70px] border-b border-gray-100 flex items-center px-6 bg-white flex-shrink-0">
-         <button onClick={onBack} className="mr-4 md:hidden text-gray-500 hover:text-main-red transition-colors">
+         <button 
+            onClick={onBack} 
+            className="mr-4 md:hidden text-gray-500 hover:text-main-red transition-colors"
+            aria-label="Retour à la liste des conversations"
+         >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
             </svg>
@@ -209,6 +232,7 @@ export default function ChatWindow({ conversationId, conversationUser, onBack }:
                    onChange={(e) => setNewMessage(e.target.value)}
                    placeholder="Écrivez votre message..."
                    className="w-full bg-transparent border-none focus:ring-0 resize-none py-3 px-4 min-h-[48px] max-h-[120px] text-sm"
+                   aria-label="Écrire un message"
                    rows={1}
                    onKeyDown={(e) => {
                       if (e.key === 'Enter' && !e.shiftKey) {
@@ -222,6 +246,7 @@ export default function ChatWindow({ conversationId, conversationUser, onBack }:
                 type="submit" 
                 disabled={!newMessage.trim() || sending}
                 className="w-12 h-12 bg-main-red text-white rounded-full flex items-center justify-center hover:bg-red-600 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
+                aria-label="Envoyer le message"
              >
                 {sending ? (
                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>

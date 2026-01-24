@@ -11,6 +11,9 @@ interface User {
   role: string;
 }
 
+/**
+ * Interface defining the shape of the authentication context.
+ */
 interface AuthContextType {
   user: User | null;
   token: string | null;
@@ -22,6 +25,10 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+/**
+ * Provider component that wraps the app and makes auth object available to any child component that calls useAuth().
+ * Handles token persistence in localStorage.
+ */
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);

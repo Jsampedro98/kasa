@@ -5,6 +5,9 @@ import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 
+/**
+ * Represents a conversation summary.
+ */
 interface Conversation {
   other_id: number;
   other_name: string;
@@ -15,6 +18,14 @@ interface Conversation {
   sender_id: number;
 }
 
+/**
+ * A component that displays a list of recent conversations.
+ * Features:
+ * - Real-time updates via polling
+ * - Visible unread indicators
+ * - Click to navigate to a conversation
+ * - Accessible keyboard navigation
+ */
 export default function ConversationList() {
   const { token } = useAuth();
   const router = useRouter();
@@ -99,6 +110,13 @@ export default function ConversationList() {
              className={`p-4 flex gap-4 cursor-pointer transition-colors border-b border-gray-50 hover:bg-gray-50
                 ${selectedId === conv.other_id.toString() ? 'bg-red-50 hover:bg-red-50 border-red-100' : ''}
              `}
+             role="button"
+             tabIndex={0}
+             onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                   router.push(`/messages?id=${conv.other_id}`);
+                }
+             }}
            >
               <div className="relative flex-shrink-0">
                 <div className="w-12 h-12 relative rounded-full overflow-hidden border border-gray-200">

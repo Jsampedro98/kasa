@@ -4,10 +4,21 @@ import Image from 'next/image';
 import { useState, useEffect, useCallback } from 'react';
 
 interface PropertyGalleryProps {
+  /** Array of image URLs to display */
   images: string[];
+  /** Title of the property (for alt text) */
   title: string;
 }
 
+/**
+ * Displays a gallery of property images.
+ * Desktop: Bento-grid layout with lightbox.
+ * Mobile: Responsive grid.
+ * Features:
+ * - Keyboard navigation (Arrow keys, Escape)
+ * - Lightbox mode with infinite loop
+ * - Optimized next/image usage
+ */
 export default function PropertyGallery({ images, title }: PropertyGalleryProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);

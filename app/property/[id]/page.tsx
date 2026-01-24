@@ -6,8 +6,32 @@ import HostWidget from '@/components/property/HostWidget';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import { Metadata } from 'next';
+
 interface PropertyPageProps {
   params: Promise<{ id: string }>;
+}
+
+export async function generateMetadata({ params }: PropertyPageProps): Promise<Metadata> {
+  const { id } = await params;
+  const property = await getProperty(id);
+
+  if (!property) {
+    return {
+      title: 'Logement introuvable - Kasa',
+      description: 'Ce logement ne semble pas exister.',
+    };
+  }
+
+  return {
+    title: `${property.title} - Kasa`,
+    description: property.description || `Découvrez ce logement situé à ${property.location} sur Kasa.`,
+    openGraph: {
+      title: property.title,
+      description: property.description || `Découvrez ce logement situé à ${property.location} sur Kasa.`,
+      images: [property.cover],
+    },
+  };
 }
 
 export default async function PropertyPage(props: PropertyPageProps) {
@@ -21,6 +45,32 @@ export default async function PropertyPage(props: PropertyPageProps) {
 
   return (
     <main className="max-w-[1240px] mx-auto px-5 py-6 md:py-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Accommodation',
+            name: property.title,
+            description: property.description,
+            image: property.pictures,
+            address: {
+              '@type': 'PostalAddress',
+              addressLocality: property.location,
+            },
+            aggregateRating: {
+              '@type': 'AggregateRating',
+              ratingValue: property.rating_avg,
+              reviewCount: property.ratings_count,
+            },
+            offers: {
+              '@type': 'Offer',
+              price: property.price_per_night, // Assuming price exists on property object
+              priceCurrency: 'EUR',
+            },
+          }),
+        }}
+      />
       {/* Top Bar: Back & Actions */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <Link href="/" className="inline-flex items-center gap-2 text-gray-700 hover:text-black hover:underline transition-colors">

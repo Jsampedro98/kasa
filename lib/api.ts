@@ -2,6 +2,10 @@ import { Property } from '@/types';
 
 const API_URL = 'http://127.0.0.1:4000/api';
 
+/**
+ * Fetches all properties from the API.
+ * @returns {Promise<Property[]>} A list of all properties.
+ */
 export async function getProperties(): Promise<Property[]> {
     try {
         const response = await fetch(`${API_URL}/properties`);
@@ -15,6 +19,11 @@ export async function getProperties(): Promise<Property[]> {
     }
 }
 
+/**
+ * Fetches a single property by its ID.
+ * @param {string} id - The unique identifier of the property.
+ * @returns {Promise<Property | null>} The property object or null if not found.
+ */
 export async function getProperty(id: string): Promise<Property | null> {
     try {
         const response = await fetch(`${API_URL}/properties/${id}`);

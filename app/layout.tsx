@@ -28,6 +28,19 @@ export default function RootLayout({
             {children}
           </MainLayout>
         </AuthProvider>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              name: 'Kasa',
+              url: 'http://localhost:3000',
+              logo: 'http://localhost:3000/logo.png', // Assuming you have a logo served
+              description: 'Site de location d\'appartements entre particuliers',
+            }),
+          }}
+        />
       </body>
     </html>
   );

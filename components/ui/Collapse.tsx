@@ -3,10 +3,16 @@
 import { useState } from 'react';
 
 interface CollapseProps {
+  /** The title displayed on the collapsible header */
   title: string;
+  /** The content to display when expanded. can be a string or an array of strings */
   content: string | string[];
 }
 
+/**
+ * A collapsible component (accordion style).
+ * Used for "Description" and "Équipements" sections.
+ */
 export default function Collapse({ title, content }: CollapseProps) {
   const [isOpen, setIsOpen] = useState(false);
 

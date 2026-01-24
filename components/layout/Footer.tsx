@@ -1,5 +1,9 @@
 import Image from 'next/image';
 
+/**
+ * Global Footer component.
+ * Displays the Kasa logo and copyright information.
+ */
 export default function Footer() {
   return (
     <footer className="w-full bg-blanc py-6 border-t border-gris-light mt-auto">
