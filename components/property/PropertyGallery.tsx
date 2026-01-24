@@ -84,7 +84,7 @@ export default function PropertyGallery({ images, title }: PropertyGalleryProps)
                   className="object-cover hover:scale-105 transition-transform duration-300"
                   sizes={index === 0 ? "(max-width: 768px) 100vw, 50vw" : "25vw"}
                   priority={index === 0}
-                  unoptimized={img.startsWith('http://127.0.0.1') || img.startsWith('http://localhost')}
+                  unoptimized={(img.startsWith('http://') || img.startsWith('https://')) && img.includes('localhost')}
                 />
              </div>
            );
@@ -128,7 +128,7 @@ export default function PropertyGallery({ images, title }: PropertyGalleryProps)
                         fill 
                         className="object-contain pointer-events-auto transition-opacity duration-500 animate-fadeIn"
                         priority
-                        unoptimized={images[currentIndex].startsWith('http://127.0.0.1') || images[currentIndex].startsWith('http://localhost')}
+                        unoptimized={(images[currentIndex].startsWith('http://') || images[currentIndex].startsWith('https://')) && images[currentIndex].includes('localhost')}
                    />
                  </div>
             </div>

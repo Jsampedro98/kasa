@@ -41,7 +41,7 @@ export default function ConversationList() {
       if (!token) return;
       
       try {
-        const res = await fetch('http://localhost:4000/api/messages/conversations', {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/messages/conversations`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -126,7 +126,7 @@ export default function ConversationList() {
                        fill
                        className="object-cover"
                        sizes="48px"
-                       unoptimized={conv.other_picture?.startsWith('http://127.0.0.1') || conv.other_picture?.startsWith('http://localhost')}
+                       unoptimized={(conv.other_picture?.startsWith('http://') || conv.other_picture?.startsWith('https://')) && conv.other_picture?.includes('localhost')}
                     />
                 </div>
                 {isUnread && (

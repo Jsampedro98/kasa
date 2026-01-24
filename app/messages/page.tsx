@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import ConversationList from '@/components/messages/ConversationList';
 import ChatWindow from '@/components/messages/ChatWindow';
 
-export default function MessagesPage() {
+function MessagesContent() {
   const { user, isAuthenticated, loading, token } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -29,7 +29,7 @@ export default function MessagesPage() {
       }
       
       try {
-         const res = await fetch(`http://localhost:4000/api/users/${activeId}/basic`, {
+         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/${activeId}/basic`, {
              headers: { 'Authorization': `Bearer ${token}` }
          });
          if (res.ok) {
@@ -118,5 +118,17 @@ export default function MessagesPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function MessagesPage() {
+  return (
+    <Suspense fallback={
+       <div className="min-h-screen flex items-center justify-center bg-[#F6F6F6]">
+         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-main-red"></div>
+       </div>
+    }>
+      <MessagesContent />
+    </Suspense>
   );
 }

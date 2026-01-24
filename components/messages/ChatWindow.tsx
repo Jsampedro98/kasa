@@ -67,7 +67,7 @@ export default function ChatWindow({ conversationId, conversationUser, onBack }:
       if (!token || !conversationId) return;
 
       try {
-        const res = await fetch(`http://localhost:4000/api/messages/${conversationId}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/messages/${conversationId}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
 
@@ -119,7 +119,7 @@ export default function ChatWindow({ conversationId, conversationUser, onBack }:
     setSending(true);
     
     try {
-      const res = await fetch('http://localhost:4000/api/messages', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/messages`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

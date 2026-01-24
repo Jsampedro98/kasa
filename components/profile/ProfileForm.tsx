@@ -33,7 +33,7 @@ export default function ProfileForm() {
         formData.append('file', file);
         formData.append('purpose', 'user-picture');
 
-        const res = await fetch('http://127.0.0.1:4000/api/uploads/image', {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/uploads/image`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -47,7 +47,7 @@ export default function ProfileForm() {
         }
 
         const data = await res.json();
-        return `http://127.0.0.1:4000${data.url}`;
+        return `${process.env.NEXT_PUBLIC_API_URL}${data.url}`;
     };
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +77,7 @@ export default function ProfileForm() {
                 payload.password = password;
             }
 
-            const res = await fetch(`http://127.0.0.1:4000/api/users/${user?.id}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/${user?.id}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ export default function ProfileForm() {
                                 fill 
                                 className="object-cover rounded-full" 
                                 sizes="128px"
-                                unoptimized={picture.startsWith('http://127.0.0.1') || picture.startsWith('http://localhost')}
+                                unoptimized={(picture.startsWith('http://') || picture.startsWith('https://')) && picture.includes('localhost')}
                             />
                         ) : (
                             <div className="w-full h-full flex items-center justify-center text-gray-400">

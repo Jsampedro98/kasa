@@ -45,7 +45,7 @@ export default function AddPropertyForm() {
     formData.append('file', file);
     formData.append('purpose', 'property-picture');
 
-    const res = await fetch('http://127.0.0.1:4000/api/uploads/image', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/uploads/image`, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`
@@ -59,7 +59,7 @@ export default function AddPropertyForm() {
     }
 
     const data = await res.json();
-    return `http://127.0.0.1:4000${data.url}`; 
+    return `${process.env.NEXT_PUBLIC_API_URL}${data.url}`; 
   };
 
   // --- Handlers ---
@@ -134,7 +134,7 @@ export default function AddPropertyForm() {
         price_per_night: 100
       };
 
-      const res = await fetch('http://127.0.0.1:4000/api/properties', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/properties`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

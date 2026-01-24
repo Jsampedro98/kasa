@@ -39,7 +39,7 @@ export default function PropertyCard({ property }: PropertyCardProps) {
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            unoptimized={property.cover.startsWith('http://127.0.0.1') || property.cover.startsWith('http://localhost')}
+            unoptimized={(property.cover.startsWith('http://') || property.cover.startsWith('https://')) && property.cover.includes('localhost')}
           />
           <button 
             onClick={handleFavoriteClick}
