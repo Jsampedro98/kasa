@@ -1,6 +1,7 @@
 import { Property } from '@/types';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+const API_URL = BASE_URL.endsWith('/api') ? BASE_URL : `${BASE_URL}/api`;
 
 /**
  * Fetches all properties from the API.
@@ -10,7 +11,8 @@ export async function getProperties(): Promise<Property[]> {
     try {
         const response = await fetch(`${API_URL}/properties`);
         if (!response.ok) {
-            throw new Error('Failed to fetch properties');
+            console.error(`Failed to fetch properties: ${response.status} ${response.statusText}`);
+            throw new Error(`Failed to fetch properties: ${response.status}`);
         }
         return response.json();
     } catch (error) {
