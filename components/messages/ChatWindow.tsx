@@ -135,14 +135,20 @@ export default function ChatWindow({ conversationId, conversationUser, onBack }:
 
       const sentMsg = await res.json();
       
+      // Map backend camelCase response to frontend snake_case structure
+      const mappedMessage = {
+        id: sentMsg.id,
+        sender_id: sentMsg.senderId || (user?.id ? parseInt(user.id) : 0),
+        receiver_id: sentMsg.receiverId || parseInt(conversationId),
+        content: sentMsg.content,
+        read: sentMsg.read || false,
+        created_at: sentMsg.createdAt || new Date().toISOString(),
+        sender_name: user?.name,
+        sender_picture: user?.picture
+      };
+      
       // Add immediately to list
-      setMessages(prev => [...prev, {
-          ...sentMsg,
-          // Add sender info manually since API might currently return simple object
-          sender_id: user?.id ? parseInt(user.id) : 0,
-          sender_name: user?.name,
-          sender_picture: user?.picture
-      }]);
+      setMessages(prev => [...prev, mappedMessage]);
       
       setNewMessage('');
       shouldScrollRef.current = true; // Force scroll on send
