@@ -16,7 +16,7 @@ export default function MessageBubble({ content, isMe, createdAt, senderName, se
        {!isMe && (
           <div className="flex-shrink-0 w-8 h-8 relative rounded-full overflow-hidden border border-gray-100 self-end mb-1">
              <Image 
-                src={senderPicture || '/assets/default-profile.png'} 
+                src={senderPicture || '/assets/default-profile.svg'} 
                 alt={senderName || 'User'} 
                 fill
                 className="object-cover"

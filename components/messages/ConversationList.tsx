@@ -27,7 +27,7 @@ interface Conversation {
  * - Accessible keyboard navigation
  */
 export default function ConversationList() {
-  const { token } = useAuth();
+  const { token, user } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const selectedId = searchParams.get('id');
@@ -50,7 +50,19 @@ export default function ConversationList() {
         if (!res.ok) throw new Error('Failed to fetch conversations');
 
         const data = await res.json();
-        setConversations(data);
+        
+        // Map backend structure to frontend structure
+        const mappedConversations = data.map((conv: any) => ({
+          other_id: conv.otherUser.id,
+          other_name: conv.otherUser.name,
+          other_picture: conv.otherUser.picture,
+          lastToken: conv.lastMessage.content,
+          read: conv.lastMessage.read,
+          timestamp: conv.lastMessage.createdAt,
+          sender_id: conv.lastMessage.isMine ? user?.id : conv.otherUser.id
+        }));
+        
+        setConversations(mappedConversations);
       } catch (err) {
         console.error(err);
         setError('Impossible de charger les conversations');
@@ -121,7 +133,7 @@ export default function ConversationList() {
               <div className="relative flex-shrink-0">
                 <div className="w-12 h-12 relative rounded-full overflow-hidden border border-gray-200">
                     <Image 
-                       src={conv.other_picture || '/assets/default-profile.png'} 
+                       src={conv.other_picture || '/assets/default-profile.svg'} 
                        alt={conv.other_name}
                        fill
                        className="object-cover"
