@@ -57,20 +57,18 @@ function MessagesContent() {
       <div className="flex-1 w-full h-full md:p-6 p-0 overflow-hidden">
         <div className="w-full h-full max-w-[1440px] mx-auto bg-white md:rounded-[25px] shadow-sm overflow-hidden flex flex-col md:flex-row border border-gray-100 relative">
         
-        {!activeId && (
-          <div className="absolute top-6 right-6 z-10 hidden md:block">
-             <button 
-                onClick={() => router.push('/')} 
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full text-sm font-medium transition"
-                aria-label="Fermer la messagerie"
-             >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-                Fermer
-             </button>
-          </div>
-        )}
+        <div className="absolute top-6 right-6 z-10 hidden md:block">
+           <button 
+              onClick={() => router.push('/')} 
+              className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full text-sm font-medium transition"
+              aria-label="Fermer la messagerie"
+           >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Fermer
+           </button>
+        </div>
 
         <div className={`w-full md:w-[350px] lg:w-[400px] border-r border-gray-100 flex flex-col h-full bg-white
              ${activeId ? 'hidden md:flex' : 'flex'}
