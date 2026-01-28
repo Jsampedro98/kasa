@@ -108,7 +108,7 @@ export default function ConversationList() {
              key={conv.other_id}
              onClick={() => router.push(`/messages?id=${conv.other_id}`)}
              className={`p-4 flex gap-4 cursor-pointer transition-colors border-b border-gray-50 hover:bg-gray-50
-                ${selectedId === conv.other_id.toString() ? 'bg-red-50 hover:bg-red-50 border-red-100' : ''}
+                ${selectedId === conv.other_id?.toString() ? 'bg-red-50 hover:bg-red-50 border-red-100' : ''}
              `}
              role="button"
              tabIndex={0}
@@ -136,7 +136,7 @@ export default function ConversationList() {
               
               <div className="flex-1 min-w-0">
                  <div className="flex justify-between items-baseline mb-1">
-                    <h3 className={`truncate pr-2 ${isUnread || selectedId === conv.other_id.toString() ? 'font-semibold text-black' : 'font-medium text-gray-700'}`}>
+                    <h3 className={`truncate pr-2 ${isUnread || selectedId === conv.other_id?.toString() ? 'font-semibold text-black' : 'font-medium text-gray-700'}`}>
                        {conv.other_name}
                     </h3>
                     <span className={`text-xs whitespace-nowrap ${isUnread ? 'text-main-red font-medium' : 'text-gray-400'}`}>
