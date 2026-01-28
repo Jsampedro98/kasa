@@ -231,9 +231,9 @@ export default function ChatWindow({ conversationId, conversationUser, onBack }:
                 <MessageBubble 
                    key={msg.id}
                    content={msg.content}
-                   isMe={msg.sender_id.toString() === user?.id}
+                   isMe={msg.sender_id?.toString() === user?.id}
                    createdAt={msg.created_at}
-                   senderName={msg.sender_id.toString() === user?.id ? 'Vous' : msg.sender_name}
+                   senderName={msg.sender_id?.toString() === user?.id ? 'Vous' : msg.sender_name}
                    senderPicture={msg.sender_picture}
                 />
              ))
