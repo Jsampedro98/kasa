@@ -1,5 +1,8 @@
 import Image from 'next/image';
 
+/**
+ * Props for MessageBubble component
+ */
 interface MessageBubbleProps {
   content: string;
   isMe: boolean;
@@ -7,6 +10,16 @@ interface MessageBubbleProps {
   senderName?: string;
   senderPicture?: string;
 }
+
+/**
+ * MessageBubble - Renders a single message bubble in the chat
+ * 
+ * Displays message content, sender avatar, and timestamp.
+ * Automatically aligns left/right based on sender.
+ * 
+ * @param {MessageBubbleProps} props - Component props
+ * @returns {JSX.Element} Message bubble element
+ */
 
 export default function MessageBubble({ content, isMe, createdAt, senderName, senderPicture }: MessageBubbleProps) {
   const time = new Date(createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });

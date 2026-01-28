@@ -2,6 +2,24 @@
 
 import { useState, useEffect } from "react";
 
+/**
+ * Custom hook for managing user favorites with localStorage persistence
+ * 
+ * Manages a list of favorite property IDs stored in browser localStorage.
+ * Provides methods to toggle favorite status and check if a property is favorited.
+ * 
+ * @returns {Object} Favorites state and methods
+ * @returns {string[]} favorites - Array of favorited property IDs
+ * @returns {Function} toggleFavorite - Function to add/remove a property from favorites
+ * @returns {Function} isFavorite - Function to check if a property is favorited
+ * 
+ * @example
+ * ```tsx
+ * const { favorites, toggleFavorite, isFavorite } = useFavorites();
+ * const isLiked = isFavorite('property-123');
+ * toggleFavorite('property-123');
+ * ```
+ */
 export default function useFavorites() {
     const [favorites, setFavorites] = useState<string[]>([]);
 

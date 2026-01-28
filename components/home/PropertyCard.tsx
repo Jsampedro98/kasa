@@ -7,9 +7,23 @@ import { Property } from '@/types';
 import useFavorites from '@/hooks/useFavorites';
 import { useAuth } from '@/context/AuthContext';
 
+/**
+ * Props for PropertyCard component
+ */
 interface PropertyCardProps {
   property: Property;
 }
+
+/**
+ * PropertyCard - Displays a property listing card
+ * 
+ * Shows property image, title, location, price per night, and favorite button.
+ * Redirects unauthenticated users to login when attempting to favorite.
+ * Uses next/image for optimized image loading.
+ * 
+ * @param {PropertyCardProps} props - Component props
+ * @returns {JSX.Element} Property card with image and details
+ */
 
 export default function PropertyCard({ property }: PropertyCardProps) {
   const { isFavorite, toggleFavorite } = useFavorites();

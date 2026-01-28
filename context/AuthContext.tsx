@@ -69,6 +69,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * Hook to access authentication context
+ * 
+ * Provides access to user authentication state and methods.
+ * Must be used within an AuthProvider component.
+ * 
+ * @returns {AuthContextType} Authentication context object
+ * @throws {Error} If used outside of AuthProvider
+ * 
+ * @example
+ * ```tsx
+ * const { user, isAuthenticated, login, logout } = useAuth();
+ * if (isAuthenticated) {
+ *   console.log('User:', user.name);
+ * }
+ * ```
+ */
 export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
