@@ -75,11 +75,23 @@ export default function ChatWindow({ conversationId, conversationUser, onBack }:
 
         const data = await res.json();
         
+        // Map backend camelCase to frontend snake_case
+        const mappedMessages = data.map((msg: any) => ({
+          id: msg.id,
+          sender_id: msg.senderId,
+          receiver_id: msg.receiverId,
+          content: msg.content,
+          read: msg.read,
+          created_at: msg.createdAt,
+          sender_name: msg.sender?.name,
+          sender_picture: msg.sender?.picture
+        }));
+        
         // Only update if we have different messages to avoid unnecessary re-renders
         // A simple check is comparing length or last message ID
         setMessages(prev => {
-            if (prev.length !== data.length || (data.length > 0 && prev.length > 0 && data[data.length-1].id !== prev[prev.length-1].id)) {
-                return data;
+            if (prev.length !== mappedMessages.length || (mappedMessages.length > 0 && prev.length > 0 && mappedMessages[mappedMessages.length-1].id !== prev[prev.length-1].id)) {
+                return mappedMessages;
             }
             return prev;
         });
