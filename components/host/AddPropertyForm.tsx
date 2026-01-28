@@ -27,6 +27,7 @@ export default function AddPropertyForm() {
   const [description, setDescription] = useState('');
   const [zipCode, setZipCode] = useState('');
   const [location, setLocation] = useState('');
+  const [pricePerNight, setPricePerNight] = useState('');
   
   const [cover, setCover] = useState('');
   const [pictures, setPictures] = useState<string[]>(['']); // Start with one empty slot
@@ -119,8 +120,36 @@ export default function AddPropertyForm() {
     setError('');
 
     try {
-      if (!title || !description || !location || !cover) {
-        throw new Error("Veuillez remplir les champs obligatoires (Titre, Description, Localisation, Cover)");
+      // Validation des champs texte de base
+      if (!title || !description || !location || !cover || !pricePerNight) {
+        throw new Error("Veuillez remplir les champs obligatoires (Titre, Description, Localisation, Cover, Prix/nuit)");
+      }
+
+      // Validation du code postal
+      if (!zipCode || zipCode.trim() === '') {
+        throw new Error("Le code postal est obligatoire");
+      }
+
+      // Validation du prix
+      const price = parseInt(pricePerNight, 10);
+      if (isNaN(price) || price <= 0) {
+        throw new Error("Le prix par nuit doit être un nombre positif");
+      }
+
+      // Validation des images du logement (au moins 1 en plus du cover)
+      const validPictures = pictures.filter(p => p.trim() !== '');
+      if (validPictures.length === 0) {
+        throw new Error("Veuillez ajouter au moins une image du logement");
+      }
+
+      // Validation des équipements (au moins 1)
+      if (selectedEquipments.size === 0) {
+        throw new Error("Veuillez sélectionner au moins un équipement");
+      }
+
+      // Validation des tags/catégories (au moins 1)
+      if (selectedTags.size === 0) {
+        throw new Error("Veuillez sélectionner au moins une catégorie");
       }
 
       const payload = {
@@ -132,7 +161,7 @@ export default function AddPropertyForm() {
         // Host is handled by backend from auth token
         equipments: Array.from(selectedEquipments),
         tags: Array.from(selectedTags),
-        price_per_night: 100
+        price_per_night: price
       };
 
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/properties`, {
@@ -225,13 +254,25 @@ export default function AddPropertyForm() {
                         />
                     </div>
 
-                    <div className="mb-0">
+                    <div className="mb-6">
                         <label className="block font-semibold mb-2">Localisation</label>
                         <input 
                             type="text" 
                             className="w-full border border-gray-200 rounded p-3 text-sm focus:outline-none focus:border-main-red"
                             value={location}
                             onChange={e => setLocation(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="mb-0">
+                        <label className="block font-semibold mb-2">Prix par nuit (€)</label>
+                        <input 
+                            type="number" 
+                            min="1"
+                            className="w-full border border-gray-200 rounded p-3 text-sm focus:outline-none focus:border-main-red"
+                            placeholder="Ex : 120"
+                            value={pricePerNight}
+                            onChange={e => setPricePerNight(e.target.value)}
                         />
                     </div>
                 </div>

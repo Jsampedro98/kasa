@@ -1,12 +1,22 @@
+'use client';
+
 import { Property } from '@/types';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface HostWidgetProps {
   host: Property['host'];
   rating: number;
+  hostId: number;
 }
 
-export default function HostWidget({ host, rating }: HostWidgetProps) {
+export default function HostWidget({ host, rating, hostId }: HostWidgetProps) {
+  const router = useRouter();
+
+  const handleContactClick = () => {
+    router.push(`/messages?id=${hostId}`);
+  };
+
   return (
     <div className="bg-white rounded-[15px] p-6 shadow-sm border border-gray-100">
         <h3 className="text-lg font-medium mb-4">Votre hôte</h3>
@@ -33,10 +43,16 @@ export default function HostWidget({ host, rating }: HostWidgetProps) {
         </div>
 
         <div className="flex flex-col gap-3">
-            <button className="w-full py-3 bg-brown-800 hover:bg-brown-900 text-white rounded-[10px] font-medium transition-colors bg-[#842C16]">
+            <button 
+                onClick={handleContactClick}
+                className="w-full py-3 bg-brown-800 hover:bg-brown-900 text-white rounded-[10px] font-medium transition-colors bg-[#842C16]"
+            >
                 Contacter l'hôte
             </button>
-            <button className="w-full py-3 bg-brown-800 hover:bg-brown-900 text-white rounded-[10px] font-medium transition-colors bg-[#842C16]">
+            <button 
+                onClick={handleContactClick}
+                className="w-full py-3 bg-brown-800 hover:bg-brown-900 text-white rounded-[10px] font-medium transition-colors bg-[#842C16]"
+            >
                 Envoyer un message
             </button>
         </div>

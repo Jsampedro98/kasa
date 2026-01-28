@@ -100,7 +100,7 @@ export default async function PropertyPage(props: PropertyPageProps) {
         {/* Right Column: Host Widget */}
         <div className="w-full md:w-[30%]">
              <div className="sticky top-10">
-                 <HostWidget host={property.host} rating={property.rating_avg} />
+                 <HostWidget host={property.host} rating={property.rating_avg} hostId={property.host.id} />
              </div>
         </div>
       </div>
